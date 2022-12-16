@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='styles.css' />
+    <title>Корзина</title>
+</head>
+
+<body id='body'>
+    <div class='app'>
+        <header class='header-desktop'>
+            <div class="header-start">
+                <img src="./data/icons/menu.svg" alt="Меню" class='ham-menu clickable'>
+                <div class='title'>товары <br />и точка</div>
+            </div>
+            <div class="search-input-container">
+                <input type="text" placeholder="Я ищу..." class='search-input'>
+                <img src='./data/icons/search.svg' class='search-icon'>
+            </div>
+            <div class="menu-icons">
+                <div class="menu-icon">
+                    <img src='./data/icons/profile.svg'>
+                    Профиль
+                </div>
+                <div id='basket-menu-icon' class="menu-icon">
+                    <img src='./data/icons/basket.svg'>
+                    Корзина
+                </div>
+            </div>
+        </header>
+        <header class='header-mobile'>
+            <img src="./data/icons/menu-mobile.svg" alt="Меню" class='ham-menu-mobile clickable'>
+            <div class='title'>товары и точка</div>
+            <img src='./data/icons/search.svg' class='search-icon-mobile'>
+        </header>
+        <main>
+            <div class="col-1">
+                <h1>Корзина</h1>
+                <section>
+                    <div class="section-header">
+                        <div class="section-header-group">
+                            <input type="checkbox" class='checkbox' id='check-all' checked
+                                onchange="handleChangeCheckAll()">
+                            <label for="check-all">Выбрать все</label>
+                        </div>
+                        <div class='toggle-arrow-container' onclick="toggleItems(this)">
+                            <img class='toggle-arrow' src='./data/icons/arrow.svg'>
+                        </div>
+
+                    </div>
+                    <section class='items items-purchase' id='items-purchase'>
+                    </section>
+                </section>
+
+                <section>
+                    <div class="section-header">
+                        <div>Отсутствуют · <span id='unavailable-count'>3</span> товара</div>
+                        <div class='toggle-arrow-container' onclick="toggleItems(this)">
+                            <img class='toggle-arrow' src='./data/icons/arrow.svg'>
+                        </div>
+                    </div>
+                    <section class='items items-unavailable' id='items-unavailable'>
+                    </section>
+                </section>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Способ доставки</h2>
+                        <div class="card-change-btn" onclick='showModal(this, showModalDelivery)'>
+                            Изменить
+                        </div>
+                    </div>
+                    <div class="card-content delivery-hidden hidden">
+                        <div class="delivery-item">
+                            <h4></h4>
+                            <div id="current-delivery"></div>
+                        </div>
+                        <div class="delivery-item">
+                            <h4>Стоимость доставки</h4>
+                            <div>Бесплатно</div>
+                        </div>
+                        <div class="delivery-item">
+                            <h4>5—6 февраля</h4>
+                            <div class='delivery-images-container'>
+                                <div class='delivery-purchase-container'>
+                                    <img src="./data/images/item1.png" alt="" class='delivery-img'>
+                                </div>
+                                <div class='delivery-purchase-container'>
+                                    <img src="./data/images/item2.png" alt="" class='delivery-img'>
+                                    <div class="badge">184</div>
+                                </div>
+                                <div class='delivery-purchase-container'>
+                                    <img src="./data/images/item3.png" alt="" class='delivery-img'>
+                                    <div class="badge">2</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="delivery-item">
+                            <h4>7—8 февраля</h4>
+                            <div class='delivery-images-container'>
+                                <div class='delivery-purchase-container'>
+                                    <img src="./data/images/item2.png" alt="" class='delivery-img'>
+                                    <div class="badge">16</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='card-mini card-mini-nobg'>
+                            <img src="./data/icons/confirm.svg" alt="">
+                            <div class="text-s">Обратная доставка товаров на склад при отказе — <span
+                                    class="text-green text-s clickable">бесплатно<div class='card popup'>
+                                        <div class='text-s'>Если товары вам не подойдут, мы вернем их обратно на склад —
+                                            это бесплатно</div>
+                                    </div></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Способ оплаты</h2>
+                        <div class="card-change-btn" onclick='showModal(this, showModalPayment)'>
+                            Изменить
+                        </div>
+                    </div>
+                    <div class='payment-hidden hidden'>
+                        <div class="current-payment"></div>
+                        <div class="text-s text-sub payment-note-hidden">Спишем оплату с карты при получении
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Получатель</h2>
+                    </div>
+                    <div class="user-card-content">
+                        <div class=' user-input-group'>
+                            <div class='user-input-container'>
+                                <input class='user-input' type="text" placeholder="Имя"
+                                    onchange="onEmptyField(this, 'Укажите имя')" oninput="showPlaceholder(this)">
+                                <div class="user-input-note user-input-placeholder">Имя</div>
+                                <div class="user-input-note user-input-error">Укажите имя</div>
+                            </div>
+                            <div class="user-input-container">
+                                <input class='user-input' type="text" placeholder="Фамилия"
+                                    onchange="onEmptyField(this, 'Укажите фамилию')" oninput="showPlaceholder(this)">
+                                <div class="user-input-note user-input-placeholder">Фамилия</div>
+                                <div class="user-input-note user-input-error">Укажите фамилию</div>
+                            </div>
+                        </div>
+                        <div class='user-input-group'>
+                            <div class="user-input-container">
+                                <input class='user-input' type="text" placeholder="Почта" onchange="validateEmail(this)"
+                                    oninput="showPlaceholder(this)">
+                                <div class="user-input-note user-input-placeholder">Почта</div>
+                                <div class="user-input-note user-input-error">Укажите почту</div>
+                            </div>
+                            <div class="user-input-container">
+                                <input class='user-input' type="text" placeholder="Телефон"
+                                    onchange="validatePhone(this)" oninput="showPlaceholder(this)">
+                                <div class="user-input-note user-input-placeholder">Номер телефона</div>
+                                <div class="user-input-note user-input-error">Укажите номер телефона</div>
+                            </div>
+                            <div class="user-input-container">
+                                <input class='user-input' type="text" placeholder="ИНН" onchange="validateIndex(this)"
+                                    oninput="showPlaceholder(this)">
+                                <div class="user-input-note user-input-placeholder">ИНН</div>
+                                <div class="user-input-note">Для таможенного оформления</div>
+                                <div class="user-input-note user-input-error">Укажите ИНН</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            Итого
+                        </h2>
+                        <h2 id='total'>
+                            0 сом
+                        </h2>
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="justify-space-between">
+                                <div><span class="show-count"></span> товаров</div>
+                                <div id="initial-total"></div>
+                            </div>
+                            <div class="justify-space-between">
+                                <div>Скидка</div>
+                                <div id="discount-total"></div>
+                            </div>
+                            <div class="justify-space-between">
+                                <div>Доставка</div>
+                                <div>Бесплатно</div>
+                            </div>
+                        </div>
+                        <div class='delivery-hidden hidden'>
+                            <div class="justify-space-between">
+                                <h4 id='delivery-total-title'>Доставка в пункт выдачи</h4>
+                                <img src='./data/icons/edit.svg' alt='Изменить'
+                                    onclick='showModal(this, showModalDelivery)' class="clickable">
+                            </div>
+                            <div class="text-s" id='current-delivery-total'></div>
+                            <div class='text-s text-purple clickable'>5–8 фев</div>
+                        </div>
+
+                        <div class='card-mini text-s hidden delivery-hidden'>
+                            <img src="./data/icons/confirm.svg" alt="">
+                            <div>Обратная доставка товаров на склад при отказе — <span
+                                    class='text-green text-s clickable'>бесплатно <div class='card popup'>
+                                        <div class='text-s'>Если товары вам не подойдут, мы вернем их обратно на склад —
+                                            это бесплатно</div>
+                                    </div></span></div>
+                        </div>
+
+                        <div class='payment-hidden hidden'>
+                            <div class="justify-space-between">
+                                <h4>Оплата картой</h4>
+                                <img src='./data/icons/edit.svg' alt='Изменить'
+                                    onclick='showModal(this, showModalPayment)' class="clickable">
+                            </div>
+                            <div class="current-payment"></div>
+                            <div class="card-mini card-mini-immediately">
+                                <div class='card-mini-immediately-item'>
+                                    <input type="checkbox" id='immediately' onchange="toggleImmediately(this)">
+                                    <label for="immediately" class='text-s'>Списать оплату сразу</label>
+                                </div>
+                                <div class='text-s payment-note-hidden'>Спишем оплату с карты при получении</div>
+                            </div>
+                        </div>
+
+                        <div class='total-btn-group'>
+                            <button class='accent-btn total-btn' id='total-btn'>Заказать</button>
+                            <div class="total-btn-note">
+                                <img src="./data/icons/check-black.svg" alt="">
+                                <div class='text-s'>Соглашаюсь с <a href='#'>правилами пользования торговой
+                                        площадкой</a> и <a href='#'>возврата</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+        <footer>
+            © 2022 ООО «Товары и точка»
+        </footer>
+    </div>
+    <script src='index.js'></script>
+</body>
+
+</html>
